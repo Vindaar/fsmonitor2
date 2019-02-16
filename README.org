@@ -1,0 +1,8 @@
+* fsmonitor2
+
+WIP successor to fsmonitor previously from the standard library. This
+version uses =asyncdispatch= instead of the old =asyncio=. 
+The modifications were heavily inspired by @snowlt23's work on
+[[https://github.com/snowlt23/nimwatch][nimwatch]]. 
+
+
