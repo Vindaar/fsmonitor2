@@ -21,7 +21,7 @@ type
   FSMonitor* = ref FSMonitorObj
   FSMonitorObj = object of RootObj
     fd: AsyncFD
-    handleEvents: seq[proc (action: MonitorEvent)]
+    handleEvents*: seq[proc (action: MonitorEvent)]
     targets: Table[WD, string]
 
   MonitorEventType* = enum ## Monitor event type
@@ -189,13 +189,15 @@ proc register*(monitor: FSMonitor, cb: proc (ev: MonitorEvent)) =
 proc read*(monitor: FSMonitor): Future[seq[MonitorEvent]] =
   result = readEvents(monitor)
 
-proc watch*(monitor: FSMonitor) =
-  var fut = monitor.read()
-  fut.callback = proc () =
-    for cb in monitor.handleEvents:
-      for action in fut.read():
-        cb(action)
-    monitor.watch()
+#proc watch*(monitor: FSMonitor) =
+#  var fut = monitor.read()
+#  fut.callback = (
+#    proc () =
+#      for cb in monitor.handleEvents:
+#        for action in fut.read():
+#          cb(action)
+#      monitor.watch()
+#  )
 
 when not defined(testing) and isMainModule:
   proc main =
